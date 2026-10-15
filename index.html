@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SỔ GHI TỪ VỰNG</title>
+  <title>SỔ GHI TỪ VỰNG</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -65,7 +65,7 @@
       </div>
       <form id="word-form" class="space-y-4">
         <input type="hidden" id="edit-word-id">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Chữ Hán *
             <input id="new-hanzi" required class="mt-1 normal-case tracking-normal w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-lg" placeholder="苹果">
           </label>
@@ -74,8 +74,25 @@
   class="mt-1 normal-case tracking-normal w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl"
   placeholder="Nhập Pinyin, ví dụ: pingguo">
 <p class="text-xs text-slate-400 mt-1">
-  Nhập chữ Hán để tự tạo Pinyin có dấu; Pinyin không dấu được nhận diện nếu khớp từ trong kho.
 </p> 
+          </label>
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Loại từ
+            <select id="new-pos" class="mt-1 normal-case tracking-normal w-full px-3 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium">
+              <option value="">Chọn loại từ</option>
+              <option value="Danh từ (n.)">Danh từ (n.)</option>
+              <option value="Động từ (v.)">Động từ (v.)</option>
+              <option value="Tính từ (adj.)">Tính từ (adj.)</option>
+              <option value="Phó từ (adv.)">Phó từ (adv.)</option>
+              <option value="Đại từ (pron.)">Đại từ (pron.)</option>
+              <option value="Lượng từ (mw.)">Lượng từ (mw.)</option>
+              <option value="Giới từ (prep.)">Giới từ (prep.)</option>
+              <option value="Liên từ (conj.)">Liên từ (conj.)</option>
+              <option value="Trợ từ (part.)">Trợ từ (part.)</option>
+              <option value="Thán từ (interj.)">Thán từ (interj.)</option>
+              <option value="Cụm từ / cách nói">Cụm từ / cách nói</option>
+              <option value="Khác">Khác</option>
+            </select>
+            <span id="pos-hint" class="block text-xs text-slate-400 mt-1"></span>
           </label>
           <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Hán Việt
             <input id="new-hanviet" class="mt-1 normal-case tracking-normal w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl" placeholder="Bình quả">
@@ -165,7 +182,7 @@
   </section>
 </main>
 <footer class="bg-white border-t border-slate-100 py-4 text-center text-xs text-slate-400 mt-auto">
-  <p>SỔ GHI TỪ VỰNG • Dữ liệu lưu trên trình duyệt này</p>
+  <p>GHI TỪ VỰNG CÙNG DAT LE • Dữ liệu lưu trên trình duyệt này</p>
 </footer>
 <div id="toast" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg text-sm"></div>
 
@@ -205,8 +222,8 @@ function escapeHtml(value) {
 }
 function getAllVocab() {
   return [
-    ...defaultVocab.map((w, i) => ({...w, id:'default-' + i, isDefault:true})),
-    ...customVocab.map(w => ({...w, isDefault:false}))
+    ...defaultVocab.map((w, i) => ({...w, pos: w.pos || commonPos[w.hanzi] || '', id:'default-' + i, isDefault:true})),
+    ...customVocab.map(w => ({...w, pos: w.pos || '', isDefault:false}))
   ];
 }
 // Chuẩn hóa Pinyin để so sánh, bỏ dấu thanh điệu
@@ -275,7 +292,7 @@ function searchWord() {
   const groups = vocabGroups.filter(g => g.wordIds.includes(found.id)).map(g => g.name);
   box.innerHTML = `
     <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-5 gap-4">
-      <div><div class="hanzi text-5xl font-bold text-red-600 mb-2">${escapeHtml(found.hanzi)}</div><div class="text-xl font-semibold text-amber-600">${escapeHtml(found.pinyin)}</div></div>
+      <div><div class="hanzi text-5xl font-bold text-red-600 mb-2">${escapeHtml(found.hanzi)}</div><div class="text-xl font-semibold text-amber-600">${escapeHtml(found.pinyin)}</div>${found.pos ? `<div class="mt-2 inline-flex bg-blue-50 text-blue-700 text-sm font-semibold px-3 py-1 rounded-lg">${escapeHtml(found.pos)}</div>` : ''}</div>
       <div class="bg-slate-50 px-4 py-3 rounded-xl"><span class="text-xs text-slate-400 block uppercase font-bold">Hán Việt</span><span class="text-lg font-bold">${escapeHtml(found.hanviet || 'Chưa cập nhật')}</span></div>
     </div>
     <div class="py-5"><h4 class="text-xs uppercase font-bold text-slate-400 mb-1">Ý nghĩa</h4><p class="text-lg font-medium">${escapeHtml(found.meaning)}</p>
@@ -289,10 +306,41 @@ function quickSearch(word) { document.getElementById('search-input').value = wor
 
 const pinyinInput = document.getElementById('new-pinyin');
 const hanziInput = document.getElementById('new-hanzi');
+const posInput = document.getElementById('new-pos');
 let pinyinWasManuallyEdited = false;
+let posWasManuallyEdited = false;
+
+// Bảng gợi ý loại từ cho một số từ thông dụng. Đây chỉ là gợi ý, không phải phân tích ngữ pháp tuyệt đối.
+const commonPos = {
+  '苹果':'Danh từ (n.)','中国':'Danh từ (n.)','朋友':'Danh từ (n.)','老师':'Danh từ (n.)','学生':'Danh từ (n.)','学校':'Danh từ (n.)','书':'Danh từ (n.)','水':'Danh từ (n.)','人':'Danh từ (n.)','家':'Danh từ (n.)','工作':'Danh từ (n.)','电脑':'Danh từ (n.)','手机':'Danh từ (n.)','时间':'Danh từ (n.)','天气':'Danh từ (n.)','问题':'Danh từ (n.)','名字':'Danh từ (n.)','东西':'Danh từ (n.)','孩子':'Danh từ (n.)','饭':'Danh từ (n.)',
+  '学习':'Động từ (v.)','喜欢':'Động từ (v.)','吃':'Động từ (v.)','喝':'Động từ (v.)','去':'Động từ (v.)','来':'Động từ (v.)','看':'Động từ (v.)','听':'Động từ (v.)','说':'Động từ (v.)','读':'Động từ (v.)','写':'Động từ (v.)','做':'Động từ (v.)','买':'Động từ (v.)','卖':'Động từ (v.)','想':'Động từ (v.)','觉得':'Động từ (v.)','知道':'Động từ (v.)','认识':'Động từ (v.)','工作':'Động từ (v.)','爱':'Động từ (v.)','有':'Động từ (v.)','是':'Động từ (v.)','在':'Động từ (v.)',
+  '漂亮':'Tính từ (adj.)','高兴':'Tính từ (adj.)','开心':'Tính từ (adj.)','忙':'Tính từ (adj.)','累':'Tính từ (adj.)','好':'Tính từ (adj.)','大':'Tính từ (adj.)','小':'Tính từ (adj.)','贵':'Tính từ (adj.)','便宜':'Tính từ (adj.)','重要':'Tính từ (adj.)','容易':'Tính từ (adj.)','难':'Tính từ (adj.)','快':'Tính từ (adj.)','慢':'Tính từ (adj.)',
+  '很':'Phó từ (adv.)','非常':'Phó từ (adv.)','也':'Phó từ (adv.)','都':'Phó từ (adv.)','不':'Phó từ (adv.)','没':'Phó từ (adv.)','再':'Phó từ (adv.)','就':'Phó từ (adv.)','已经':'Phó từ (adv.)','常常':'Phó từ (adv.)','马上':'Phó từ (adv.)',
+  '我':'Đại từ (pron.)','你':'Đại từ (pron.)','他':'Đại từ (pron.)','她':'Đại từ (pron.)','我们':'Đại từ (pron.)','这':'Đại từ (pron.)','那':'Đại từ (pron.)','谁':'Đại từ (pron.)','什么':'Đại từ (pron.)','哪里':'Đại từ (pron.)',
+  '个':'Lượng từ (mw.)','本':'Lượng từ (mw.)','只':'Lượng từ (mw.)','张':'Lượng từ (mw.)','杯':'Lượng từ (mw.)',
+  '从':'Giới từ (prep.)','对':'Giới từ (prep.)','给':'Giới từ (prep.)','跟':'Giới từ (prep.)','因为':'Liên từ (conj.)','所以':'Liên từ (conj.)','但是':'Liên từ (conj.)','如果':'Liên từ (conj.)',
+  '吗':'Trợ từ (part.)','呢':'Trợ từ (part.)','吧':'Trợ từ (part.)','了':'Trợ từ (part.)','的':'Trợ từ (part.)','着':'Trợ từ (part.)','过':'Trợ từ (part.)','你好':'Cụm từ / cách nói'
+};
+function suggestPartOfSpeech(hanzi) {
+  const value = String(hanzi || '').trim();
+  if (!value) return '';
+  if (commonPos[value]) return commonPos[value];
+  const existing = getAllVocab().find(w => w.hanzi === value && w.pos);
+  return existing ? existing.pos : '';
+}
+function updatePosSuggestion() {
+  if (posWasManuallyEdited) return;
+  const suggestion = suggestPartOfSpeech(hanziInput.value);
+  posInput.value = suggestion;
+  document.getElementById('pos-hint').textContent = suggestion
+    ? 'Gợi ý tự động: ' + suggestion + ' — kiểm tra lại theo ngữ cảnh nhé.'
+    : 'Chưa nhận diện được loại từ;chọn loại từ thủ công nhé.';
+}
+posInput.addEventListener('change', () => { posWasManuallyEdited = true; });
 
 // Khi nhập chữ Hán, tự điền Pinyin có dấu. Người dùng vẫn có thể sửa lại.
 hanziInput.addEventListener('input', () => {
+  updatePosSuggestion();
   const generated = hanziToPinyin(hanziInput.value);
   if (generated && (!pinyinInput.value.trim() || !pinyinWasManuallyEdited)) {
     pinyinInput.value = generated;
@@ -325,12 +373,13 @@ document.getElementById('word-form').addEventListener('submit', e => {
   const hanzi = document.getElementById('new-hanzi').value.trim();
   const pinyin = document.getElementById('new-pinyin').value.trim();
   const hanviet = document.getElementById('new-hanviet').value.trim();
+  const pos = posInput.value;
   const meaning = document.getElementById('new-meaning').value.trim();
   const exCn = document.getElementById('new-ex-cn').value.trim();
   const exVi = document.getElementById('new-ex-vi').value.trim();
   const duplicate = getAllVocab().find(w => w.hanzi.toLocaleLowerCase() === hanzi.toLocaleLowerCase() && w.id !== editId);
   if (duplicate) { notify(`Từ "${hanzi}" đã tồn tại trong kho từ vựng.`); return; }
-  const word = {id: editId || makeId(), hanzi, pinyin, hanviet: hanviet || '', meaning, examples: exCn ? [{cn:exCn, py:'', vi:exVi}] : []};
+  const word = {id: editId || makeId(), hanzi, pinyin, pos: pos || '', hanviet: hanviet || '', meaning, examples: exCn ? [{cn:exCn, py:'', vi:exVi}] : []};
   if (editId) {
     const index = customVocab.findIndex(w => w.id === editId);
     if (index < 0) { notify('Không tìm thấy từ cần sửa.'); cancelWordEdit(); return; }
@@ -340,7 +389,7 @@ document.getElementById('word-form').addEventListener('submit', e => {
     customVocab.push(word);
     notify(`Đã thêm từ "${hanzi}".`);
   }
-  persistWords(); e.target.reset(); pinyinWasManuallyEdited = false; document.getElementById('edit-word-id').value = '';
+  persistWords(); e.target.reset(); pinyinWasManuallyEdited = false; posWasManuallyEdited = false; document.getElementById('pos-hint').textContent = 'Tự gợi ý khi nhận diện được; mày có thể đổi thủ công.'; document.getElementById('edit-word-id').value = '';
   document.getElementById('word-form-title').textContent = 'Thêm từ vựng của riêng bạn';
   document.getElementById('save-word-label').textContent = 'Lưu từ vựng';
   document.getElementById('cancel-edit-btn').classList.add('hidden');
@@ -352,6 +401,9 @@ function editCustomWord(id) {
   document.getElementById('new-hanzi').value = w.hanzi || '';
   document.getElementById('new-pinyin').value = w.pinyin || '';
   pinyinWasManuallyEdited = true;
+  document.getElementById('new-pos').value = w.pos || '';
+  posWasManuallyEdited = true;
+  document.getElementById('pos-hint').textContent = w.pos ? 'Loại từ đã lưu; mày có thể đổi thủ công.' : 'Từ cũ chưa có loại từ; hãy chọn hoặc nhập lại chữ Hán để nhận gợi ý.';
   document.getElementById('new-hanviet').value = w.hanviet || '';
   document.getElementById('new-meaning').value = w.meaning || '';
   document.getElementById('new-ex-cn').value = w.examples?.[0]?.cn || '';
@@ -364,6 +416,8 @@ function editCustomWord(id) {
 function cancelWordEdit() {
   document.getElementById('word-form').reset();
   pinyinWasManuallyEdited = false;
+  posWasManuallyEdited = false;
+  document.getElementById('pos-hint').textContent = 'Tự gợi ý khi nhận diện được; mày có thể đổi thủ công.';
   document.getElementById('edit-word-id').value = '';
   document.getElementById('word-form-title').textContent = 'Thêm từ vựng của riêng bạn';
   document.getElementById('save-word-label').textContent = 'Lưu từ vựng';
@@ -378,7 +432,7 @@ function renderCustomWordsList() {
   container.innerHTML = list.map(w => {
     const groups = vocabGroups.filter(g => g.wordIds.includes(w.id));
     return `<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl">
-      <div class="min-w-0"><div class="flex flex-wrap items-center gap-2"><span class="hanzi text-xl font-bold text-red-600">${escapeHtml(w.hanzi)}</span><span class="text-sm font-semibold text-amber-600">${escapeHtml(w.pinyin)}</span></div><p class="text-sm text-slate-700">${escapeHtml(w.meaning)}</p><p class="text-xs text-slate-400 mt-1">Nhóm: ${groups.length ? groups.map(g => escapeHtml(g.name)).join(', ') : 'Chưa phân nhóm'}</p></div>
+      <div class="min-w-0"><div class="flex flex-wrap items-center gap-2"><span class="hanzi text-xl font-bold text-red-600">${escapeHtml(w.hanzi)}</span><span class="text-sm font-semibold text-amber-600">${escapeHtml(w.pinyin)}</span>${w.pos ? `<span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-md">${escapeHtml(w.pos)}</span>` : ''}</div><p class="text-sm text-slate-700">${escapeHtml(w.meaning)}</p><p class="text-xs text-slate-400 mt-1">Nhóm: ${groups.length ? groups.map(g => escapeHtml(g.name)).join(', ') : 'Chưa phân nhóm'}</p></div>
       <div class="flex gap-2 shrink-0"><button onclick="editCustomWord('${w.id}')" class="text-xs text-blue-600 bg-blue-50 px-3 py-2 rounded-lg"><i class="fa-solid fa-pen mr-1"></i>Sửa</button><button onclick="deleteCustomWord('${w.id}')" class="text-xs text-rose-600 bg-rose-50 px-3 py-2 rounded-lg"><i class="fa-solid fa-trash mr-1"></i>Xóa</button></div>
     </div>`;
   }).join('');
@@ -441,13 +495,13 @@ function renderGroupManager() {
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="border border-slate-100 rounded-xl p-4">
         <h4 class="font-bold mb-3">Từ trong nhóm (${members.length})</h4>
-        ${members.length ? `<div class="space-y-2 max-h-80 overflow-y-auto">${members.map(w => `<div class="flex items-center justify-between gap-2 bg-slate-50 rounded-lg p-3"><div><p class="hanzi font-bold text-red-600">${escapeHtml(w.hanzi)} <span class="text-xs text-amber-600 font-medium">${escapeHtml(w.pinyin)}</span></p><p class="text-sm">${escapeHtml(w.meaning)}</p></div><button onclick="removeWordFromGroup('${group.id}','${w.id}')" class="text-xs text-rose-600 px-2 py-1">Bỏ khỏi nhóm</button></div>`).join('')}</div>` : '<p class="text-sm text-slate-400">Nhóm chưa có từ nào.</p>'}
+        ${members.length ? `<div class="space-y-2 max-h-80 overflow-y-auto">${members.map(w => `<div class="flex items-center justify-between gap-2 bg-slate-50 rounded-lg p-3"><div><p class="hanzi font-bold text-red-600">${escapeHtml(w.hanzi)} <span class="text-xs text-amber-600 font-medium">${escapeHtml(w.pinyin)}</span></p>${w.pos ? `<p class="text-xs text-blue-700">${escapeHtml(w.pos)}</p>` : ''}<p class="text-sm">${escapeHtml(w.meaning)}</p></div><button onclick="removeWordFromGroup('${group.id}','${w.id}')" class="text-xs text-rose-600 px-2 py-1">Bỏ khỏi nhóm</button></div>`).join('')}</div>` : '<p class="text-sm text-slate-400">Nhóm chưa có từ nào.</p>'}
       </div>
       <div class="border border-slate-100 rounded-xl p-4">
         <h4 class="font-bold mb-1">Thêm từ vào nhóm</h4><p class="text-xs text-slate-500 mb-3">Có thể chọn nhiều từ rồi thêm cùng lúc.</p>
         <input id="group-word-filter" oninput="filterGroupWords()" class="w-full mb-3 px-3 py-2 border border-slate-200 rounded-lg text-sm" placeholder="Tìm chữ Hán, Pinyin hoặc nghĩa...">
         <div class="flex gap-2 mb-3"><button onclick="toggleGroupWordChecks(true)" class="text-xs text-blue-600">Chọn tất cả đang hiện</button><button onclick="toggleGroupWordChecks(false)" class="text-xs text-slate-500">Bỏ chọn</button></div>
-        <div id="group-available-words" class="space-y-2 max-h-64 overflow-y-auto">${nonMembers.length ? nonMembers.map(w => `<label data-search="${escapeHtml((w.hanzi+' '+w.pinyin+' '+w.meaning+' '+(w.hanviet||'')).toLocaleLowerCase())}" class="group-word-option flex items-start gap-2 bg-slate-50 rounded-lg p-3 cursor-pointer"><input type="checkbox" value="${w.id}" class="group-word-checkbox mt-1"><span><span class="hanzi font-bold text-red-600">${escapeHtml(w.hanzi)}</span> <span class="text-xs text-amber-600">${escapeHtml(w.pinyin)}</span><span class="block text-sm">${escapeHtml(w.meaning)}</span></span></label>`).join('') : '<p class="text-sm text-slate-400">Tất cả từ hiện có đã nằm trong nhóm này.</p>'}</div>
+        <div id="group-available-words" class="space-y-2 max-h-64 overflow-y-auto">${nonMembers.length ? nonMembers.map(w => `<label data-search="${escapeHtml((w.hanzi+' '+w.pinyin+' '+w.meaning+' '+(w.hanviet||'')).toLocaleLowerCase())}" class="group-word-option flex items-start gap-2 bg-slate-50 rounded-lg p-3 cursor-pointer"><input type="checkbox" value="${w.id}" class="group-word-checkbox mt-1"><span><span class="hanzi font-bold text-red-600">${escapeHtml(w.hanzi)}</span> <span class="text-xs text-amber-600">${escapeHtml(w.pinyin)}</span>${w.pos ? `<span class="ml-1 text-xs text-blue-700">${escapeHtml(w.pos)}</span>` : ''}<span class="block text-sm">${escapeHtml(w.meaning)}</span></span></label>`).join('') : '<p class="text-sm text-slate-400">Tất cả từ hiện có đã nằm trong nhóm này.</p>'}</div>
         <button onclick="addSelectedWordsToGroup('${group.id}')" class="mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-3 rounded-xl">Thêm các từ đã chọn</button>
       </div>
     </div>`;
@@ -526,6 +580,31 @@ function loadQuestion() {
     optionsContainer.appendChild(btn);
   });
 }
+// Lời khích lệ nhẹ nhàng cho phần luyện tập
+const praiseMessages = [
+  'Giỏi nha má! 💗',
+  'Hay nha bà ơi! 很厉害 ✨',
+  'Bạn giỏi quá trời luôn á! 🌷',
+  'Đúng rùi bà iu ơi! 🫶',
+  'Đỉnh nha má, tiếp tục phát huy! 💕',
+  'Quá giỏi luôn bà ơi! ✨',
+  'Trời ơi, bà đỉnh quá! 🌸',
+  'Tốt lắm nha, cố gắng giữ phong độ! 💖'
+];
+
+const gentleMessages = [
+  'Sai mất tiu òi bà ơi 🥹',
+  'Khôm đúng rùi bà ơiii 🌷',
+  'Hông sao hết, mình thử lại nha má! 💗',
+  'Nhầm xíu thui bà iu ơi 🫶',
+  'Không sao nha, mình học tiếp nè! ✨',
+  'Cố lên bà ơi, từ từ sẽ nhớ mà! 🌸'
+];
+
+function randomMessage(messages) {
+  return messages[Math.floor(Math.random() * messages.length)];
+}
+
 function checkAnswer(selected, correct, btnElement) {
   if (answeredCurrent) return; answeredCurrent = true;
   const feedback = document.getElementById('quiz-feedback'); feedback.classList.remove('hidden');
@@ -533,12 +612,12 @@ function checkAnswer(selected, correct, btnElement) {
   if (selected === correct) {
     btnElement.className = 'p-4 bg-emerald-500 text-white border border-emerald-600 rounded-xl font-medium text-left shadow-md';
     feedback.className = 'mt-6 p-4 rounded-xl text-center font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
-    feedback.textContent = 'Chính xác! Bạn thật tuyệt vời 🎉';
+    feedback.textContent = `Đúng! ${randomMessage(praiseMessages)}`;
     currentCorrectCount++;
   } else {
     btnElement.className = 'p-4 bg-rose-500 text-white border border-rose-600 rounded-xl font-medium text-left shadow-md';
     feedback.className = 'mt-6 p-4 rounded-xl text-center font-medium bg-rose-50 text-rose-700 border border-rose-200';
-    feedback.textContent = `Chưa chính xác. Đáp án đúng là: "${correct}"`;
+    feedback.textContent = `Sai! ${randomMessage(gentleMessages)} Đáp án đúng là: "${correct}"`;
     buttons.forEach(b => { if (b.textContent === correct) b.className = 'p-4 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl font-medium text-left'; });
     currentIncorrectCount++;
   }
