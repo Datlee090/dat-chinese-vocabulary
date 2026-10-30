@@ -12,7 +12,7 @@
     button:disabled { opacity: .45; cursor: not-allowed; }
     .hanzi { font-family: 'Noto Sans SC', sans-serif; }
 
-    /* Tối ưu màn hình điện thoại: điểm số, câu hỏi và phản hồi nằm gọn trong một màn hình */
+    /* Tối ưu màn hình điện thoại: điểm số, câu hỏi  */
     @media (max-width: 640px) {
       header > div { padding-top: 8px !important; padding-bottom: 8px !important; gap: 7px !important; }
       header h1 { font-size: 17px !important; line-height: 1.15 !important; }
@@ -20,11 +20,11 @@
       header nav button { padding: 7px 9px !important; font-size: 12px !important; }
       main { padding: 10px 10px 12px !important; }
       #tab-practice { gap: 8px !important; }
-      #tab-practice > .grid { gap: 8px !important; }
-      #tab-practice > .grid > div { padding: 9px 11px !important; border-radius: 13px !important; }
-      #tab-practice > .grid > div p { font-size: 10px !important; }
-      #tab-practice > .grid > div h3 { font-size: 23px !important; margin-top: 0 !important; }
-      #tab-practice > .grid > div > div:last-child { width: 32px !important; height: 32px !important; border-radius: 9px !important; }
+      #practice-score-grid { gap: 8px !important; margin: 0 0 8px !important; }
+      #practice-score-grid > div { padding: 9px 11px !important; border-radius: 13px !important; }
+      #practice-score-grid > div p { font-size: 10px !important; }
+      #practice-score-grid > div h3 { font-size: 23px !important; margin-top: 0 !important; }
+      #practice-score-grid > div > div:last-child { width: 32px !important; height: 32px !important; border-radius: 9px !important; }
       #tab-practice > .bg-white { padding: 12px !important; border-radius: 16px !important; }
       #tab-practice > .bg-white > div:first-child { margin-bottom: 9px !important; gap: 7px !important; }
       #tab-practice h2 { font-size: 15px !important; }
@@ -59,7 +59,7 @@
     @media (max-width: 640px) and (max-height: 760px) {
       header > div { padding-top: 5px !important; padding-bottom: 5px !important; }
       main { padding-top: 6px !important; padding-bottom: 6px !important; }
-      #tab-practice > .grid > div { padding: 6px 9px !important; }
+      #practice-score-grid > div { padding: 6px 9px !important; }
       #tab-practice > .bg-white { padding: 9px !important; }
       #practice-content > .text-center { padding: 2px 0 !important; }
       #quiz-question.hanzi { font-size: 36px !important; }
@@ -187,10 +187,6 @@
 
   <!-- LUYỆN TẬP -->
   <section id="tab-practice" class="tab-panel hidden space-y-6">
-    <div class="grid grid-cols-2 gap-4">
-      <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex items-center justify-between"><div><p class="text-xs text-emerald-600 uppercase font-bold">Đúng</p><h3 id="score-correct" class="text-3xl font-bold text-emerald-700 mt-1">0</h3></div><div class="w-12 h-12 bg-emerald-500 text-white rounded-xl flex items-center justify-center text-xl">✓</div></div>
-      <div class="bg-rose-50 border border-rose-200 rounded-2xl p-5 flex items-center justify-between"><div><p class="text-xs text-rose-600 uppercase font-bold">Sai</p><h3 id="score-incorrect" class="text-3xl font-bold text-rose-700 mt-1">0</h3></div><div class="w-12 h-12 bg-rose-500 text-white rounded-xl flex items-center justify-center text-xl">✕</div></div>
-    </div>
     <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div><h2 class="font-bold text-lg">Luyện tập trắc nghiệm</h2><p id="practice-source-label" class="text-sm text-slate-500">Nguồn: Toàn bộ từ vựng</p></div>
@@ -202,6 +198,10 @@
       <div class="flex flex-wrap gap-2 mb-5" role="group" aria-label="Chọn kiểu luyện tập">
         <button id="mode-choice-btn" onclick="setPracticeMode('choice')" class="px-4 py-2 rounded-xl bg-slate-800 text-white font-semibold text-sm">📝 Trắc nghiệm nghĩa</button>
         <button id="mode-pinyin-btn" onclick="setPracticeMode('pinyin')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold text-sm">⌨️ Gõ Pinyin → chữ Hán</button>
+      </div>
+      <div id="practice-score-grid" class="grid grid-cols-2 gap-4 mb-4">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex items-center justify-between"><div><p class="text-xs text-emerald-600 uppercase font-bold">Đúng</p><h3 id="score-correct" class="text-3xl font-bold text-emerald-700 mt-1">0</h3></div><div class="w-12 h-12 bg-emerald-500 text-white rounded-xl flex items-center justify-center text-xl">✓</div></div>
+        <div class="bg-rose-50 border border-rose-200 rounded-2xl p-5 flex items-center justify-between"><div><p class="text-xs text-rose-600 uppercase font-bold">Sai</p><h3 id="score-incorrect" class="text-3xl font-bold text-rose-700 mt-1">0</h3></div><div class="w-12 h-12 bg-rose-500 text-white rounded-xl flex items-center justify-center text-xl">✕</div></div>
       </div>
       <div id="practice-empty" class="hidden text-center py-10">
         <div class="text-4xl mb-3">📚</div><h3 class="font-bold text-slate-700">Chưa có đủ từ để luyện tập</h3><p class="text-sm text-slate-500 mt-2">Hãy thêm từ hoặc chọn nhóm có từ vựng.</p>
@@ -738,3 +738,4 @@ startPracticeForSelection();
 </script>
 </body>
 </html>
+
