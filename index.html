@@ -149,7 +149,6 @@
   <section id="tab-groups" class="tab-panel hidden space-y-6">
     <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100">
       <h2 class="text-lg font-bold mb-2">Tạo nhóm từ theo chủ đề</h2>
-      <p class="text-sm text-slate-500 mb-5">Mỗi từ có thể nằm trong nhiều nhóm. Xóa nhóm không xóa từ vựng.</p>
       <form id="group-form" class="flex flex-col sm:flex-row gap-3">
         <input id="new-group-name" required maxlength="60" class="flex-grow px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl" placeholder="Ví dụ: Đồ ăn, Gia đình, Trường học...">
         <button class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-xl"><i class="fa-solid fa-folder-plus mr-2"></i>Tạo nhóm</button>
@@ -157,7 +156,7 @@
     </div>
     <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-        <div><h3 class="font-bold">Quản lý nhóm</h3><p class="text-xs text-slate-500 mt-1">Chọn nhóm để thêm hoặc bỏ từ, đổi tên, hoặc bắt đầu luyện tập.</p></div>
+        <div><h3 class="font-bold">Quản lý nhóm</h3><p class="text-xs text-slate-500 mt-1">Chọn nhóm để bắt đầu luyện tập.</p></div>
         <select id="group-select" onchange="renderGroupManager()" class="px-3 py-2 border border-slate-200 rounded-xl bg-white"><option value="">— Chọn nhóm —</option></select>
       </div>
       <div id="group-manager" class="space-y-4"></div>
@@ -195,12 +194,10 @@
         </div>
         <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6"></div>
         <div id="pinyin-answer-area" class="hidden mt-6 space-y-3">
-          <label for="pinyin-answer-input" class="block text-sm font-semibold text-slate-700">Dựa vào nghĩa tiếng Việt, gõ Pinyin bằng bộ gõ tiếng Trung để tạo chữ Hán rồi kiểm tra.</label>
           <div class="flex flex-col sm:flex-row gap-2">
             <input id="pinyin-answer-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Ví dụ: gõ ni hao rồi chọn 你好" class="flex-1 px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400" onkeydown="if(event.key==='Enter') checkPinyinAnswer()">
             <button id="check-pinyin-btn" onclick="checkPinyinAnswer()" class="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold">Kiểm tra</button>
           </div>
-          <p class="text-xs text-slate-500">Bật bộ gõ tiếng Trung trên máy, gõ Pinyin rồi chọn đúng chữ Hán. Hệ thống sẽ chấm chữ Hán bạn nhập.</p>
         </div>
         <div id="quiz-feedback" class="mt-6 p-4 rounded-xl text-center font-medium hidden"></div>
         <div class="mt-6 flex justify-end"><button id="next-btn" onclick="nextQuestion()" class="hidden bg-slate-800 hover:bg-slate-900 text-white font-semibold px-6 py-3 rounded-xl">Câu tiếp theo ➔</button></div>
@@ -537,7 +534,7 @@ function loadQuestion() {
   document.getElementById('practice-empty').classList.toggle('hidden', !empty);
   document.getElementById('practice-content').classList.toggle('hidden', empty);
   const group = vocabGroups.find(g => g.id === currentPracticeGroup);
-  document.getElementById('practice-source-label').textContent = currentPracticeGroup === '__all__' ? 'Nguồn: Toàn bộ từ vựng' : `Nguồn: Nhóm ${group ? group.name : ''}`;
+  document.getElementById('practice-source-label').textContent = currentPracticeGroup === '__all__' ? '' : `Nguồn: Nhóm ${group ? group.name : ''}`;
   if (empty) return;
   if (currentQuestionIndex >= practiceVocab.length) currentQuestionIndex = 0;
   const current = practiceVocab[currentQuestionIndex];
