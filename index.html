@@ -12,6 +12,40 @@
     button:disabled { opacity: .45; cursor: not-allowed; }
     .hanzi { font-family: 'Noto Sans SC', sans-serif; }
 
+    /* Mobile layout: compacta o luyện tập mà không thay đổi cấu trúc/chức năng */
+    @media (max-width: 640px) {
+      header > div { padding: 10px 12px !important; gap: 10px !important; }
+      header nav { width: 100%; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      header nav button { padding: 9px 5px !important; font-size: 12px !important; white-space: nowrap; }
+      main { padding: 14px 10px 22px !important; }
+      #tab-practice { gap: 10px !important; }
+      #tab-practice > div { padding: 14px 12px !important; border-radius: 16px !important; }
+      #tab-practice > div > div:first-child { gap: 8px !important; margin-bottom: 12px !important; }
+      #practice-group-select { min-width: 0; max-width: 62%; font-size: 12px; padding: 8px !important; }
+      #tab-practice [role="group"] { gap: 7px !important; margin-bottom: 10px !important; }
+      #tab-practice [role="group"] button { flex: 1 1 0; padding: 9px 6px !important; font-size: 11px !important; line-height: 1.25; }
+      #practice-score-grid { gap: 8px !important; margin-bottom: 10px !important; }
+      #practice-score-grid > div { padding: 10px 12px !important; border-radius: 14px !important; }
+      #practice-score-grid h3 { font-size: 23px !important; margin-top: 0 !important; }
+      #practice-score-grid > div > div:last-child { width: 34px !important; height: 34px !important; border-radius: 10px !important; font-size: 16px !important; }
+      #practice-content > div:first-child { margin-bottom: 8px !important; }
+      #practice-content > div:nth-child(2) { padding: 8px 2px 10px !important; }
+      #quiz-prompt { margin-bottom: 4px !important; font-size: 13px !important; }
+      #quiz-question { font-size: clamp(42px, 13vw, 56px) !important; margin: 8px 0 !important; line-height: 1.2; }
+      #quiz-pinyin { font-size: 16px !important; }
+      #quiz-options { margin-top: 8px !important; gap: 8px !important; }
+      #quiz-options button { padding: 12px 13px !important; font-size: 14px !important; line-height: 1.35; }
+      #pinyin-answer-area { margin-top: 10px !important; gap: 8px !important; }
+      #pinyin-answer-area label { font-size: 12px !important; line-height: 1.4; }
+      #pinyin-answer-area input, #pinyin-answer-area button { padding: 11px 12px !important; }
+      #pinyin-answer-area > p { line-height: 1.35; }
+      #quiz-feedback { margin-top: 10px !important; padding: 11px !important; font-size: 13px !important; }
+      #quiz-feedback .hanzi { font-size: 34px !important; }
+      #practice-content > div:last-child { margin-top: 10px !important; }
+      #next-btn { padding: 11px 17px !important; }
+      body { padding-bottom: env(safe-area-inset-bottom); }
+    }
+
   </style>
 </head>
 <body class="bg-gradient-to-br from-red-50 via-amber-50 to-orange-100 min-h-screen text-slate-800 flex flex-col">
@@ -676,6 +710,22 @@ function importData(event) {
   reader.readAsText(file);
 }
 
+
+// Bộ mẫu HSK 4 (30 từ): chỉ thêm một lần, không ghi đè dữ liệu người dùng.
+const HSK4_STARTER_WORDS = [{"id":"hsk4-sample-01","hanzi":"安排","pinyin":"ānpái","hanviet":"An Bài","meaning":"Sắp xếp, bố trí","pos":"Động từ","examples":[{"cn":"我已经安排好了明天的工作。","py":"Wǒ yǐjīng ānpái hǎo le míngtiān de gōngzuò","vi":"Tôi đã sắp xếp xong công việc ngày mai."}]},{"id":"hsk4-sample-02","hanzi":"保护","pinyin":"bǎohù","hanviet":"Bảo Hộ","meaning":"Bảo vệ","pos":"Động từ","examples":[{"cn":"我们应该保护环境。","py":"Wǒmen yīnggāi bǎohù huánjìng","vi":"Chúng ta nên bảo vệ môi trường."}]},{"id":"hsk4-sample-03","hanzi":"变化","pinyin":"biànhuà","hanviet":"Biến Hóa","meaning":"Thay đổi, sự thay đổi","pos":"Danh từ/Động từ","examples":[{"cn":"这几年城市的变化很大。","py":"Zhè jǐ nián chéngshì de biànhuà hěn dà","vi":"Những năm gần đây thành phố thay đổi rất nhiều."}]},{"id":"hsk4-sample-04","hanzi":"参加","pinyin":"cānjiā","hanviet":"Tham Gia","meaning":"Tham gia","pos":"Động từ","examples":[{"cn":"周末我想参加学校的活动。","py":"Zhōumò wǒ xiǎng cānjiā xuéxiào de huódòng","vi":"Cuối tuần tôi muốn tham gia hoạt động của trường."}]},{"id":"hsk4-sample-05","hanzi":"成功","pinyin":"chénggōng","hanviet":"Thành Công","meaning":"Thành công","pos":"Danh từ/Tính từ","examples":[{"cn":"只要努力，就有可能成功。","py":"Zhǐyào nǔlì, jiù yǒu kěnéng chénggōng","vi":"Chỉ cần cố gắng thì sẽ có khả năng thành công."}]},{"id":"hsk4-sample-06","hanzi":"除了","pinyin":"chúle","hanviet":"Trừ Liễu","meaning":"Ngoài… ra, ngoại trừ","pos":"Giới từ","examples":[{"cn":"除了中文，我还学习英语。","py":"Chúle Zhōngwén, wǒ hái xuéxí Yīngyǔ","vi":"Ngoài tiếng Trung, tôi còn học tiếng Anh."}]},{"id":"hsk4-sample-07","hanzi":"打算","pinyin":"dǎsuàn","hanviet":"Đả Toán","meaning":"Dự định, kế hoạch","pos":"Động từ/Danh từ","examples":[{"cn":"我打算明年去中国留学。","py":"Wǒ dǎsuàn míngnián qù Zhōngguó liúxué","vi":"Tôi dự định năm sau đi du học Trung Quốc."}]},{"id":"hsk4-sample-08","hanzi":"担心","pinyin":"dānxīn","hanviet":"Đam Tâm","meaning":"Lo lắng","pos":"Động từ","examples":[{"cn":"别担心，我会帮助你。","py":"Bié dānxīn, wǒ huì bāngzhù nǐ","vi":"Đừng lo, tôi sẽ giúp bạn."}]},{"id":"hsk4-sample-09","hanzi":"发现","pinyin":"fāxiàn","hanviet":"Phát Hiện","meaning":"Phát hiện, nhận ra","pos":"Động từ","examples":[{"cn":"我发现这本书很有意思。","py":"Wǒ fāxiàn zhè běn shū hěn yǒu yìsi","vi":"Tôi phát hiện cuốn sách này rất thú vị."}]},{"id":"hsk4-sample-10","hanzi":"负责","pinyin":"fùzé","hanviet":"Phụ Trách","meaning":"Chịu trách nhiệm, phụ trách","pos":"Động từ/Tính từ","examples":[{"cn":"他负责公司的中文翻译工作。","py":"Tā fùzé gōngsī de Zhōngwén fānyì gōngzuò","vi":"Anh ấy phụ trách công việc biên dịch tiếng Trung của công ty."}]},{"id":"hsk4-sample-11","hanzi":"根据","pinyin":"gēnjù","hanviet":"Căn Cứ","meaning":"Căn cứ theo, dựa vào","pos":"Giới từ","examples":[{"cn":"请根据自己的情况选择。","py":"Qǐng gēnjù zìjǐ de qíngkuàng xuǎnzé","vi":"Hãy lựa chọn dựa theo tình hình của bản thân."}]},{"id":"hsk4-sample-12","hanzi":"提高","pinyin":"tígāo","hanviet":"Đề Cao","meaning":"Nâng cao, cải thiện","pos":"Động từ","examples":[{"cn":"每天练习可以提高汉语水平。","py":"Měitiān liànxí kěyǐ tígāo Hànyǔ shuǐpíng","vi":"Luyện tập mỗi ngày có thể nâng cao trình độ tiếng Trung."}]},{"id":"hsk4-sample-13","hanzi":"机会","pinyin":"jīhuì","hanviet":"Cơ Hội","meaning":"Cơ hội","pos":"Danh từ","examples":[{"cn":"这是一个很好的学习机会。","py":"Zhè shì yí ge hěn hǎo de xuéxí jīhuì","vi":"Đây là một cơ hội học tập rất tốt."}]},{"id":"hsk4-sample-14","hanzi":"坚持","pinyin":"jiānchí","hanviet":"Kiên Trì","meaning":"Kiên trì, tiếp tục giữ vững","pos":"Động từ","examples":[{"cn":"学习语言需要坚持。","py":"Xuéxí yǔyán xūyào jiānchí","vi":"Học ngôn ngữ cần sự kiên trì."}]},{"id":"hsk4-sample-15","hanzi":"决定","pinyin":"juédìng","hanviet":"Quyết Định","meaning":"Quyết định","pos":"Động từ/Danh từ","examples":[{"cn":"我决定每天读半个小时中文。","py":"Wǒ juédìng měitiān dú bàn ge xiǎoshí Zhōngwén","vi":"Tôi quyết định mỗi ngày đọc tiếng Trung nửa tiếng."}]},{"id":"hsk4-sample-16","hanzi":"理解","pinyin":"lǐjiě","hanviet":"Lý Giải","meaning":"Hiểu, thông cảm","pos":"Động từ","examples":[{"cn":"我能理解你的想法。","py":"Wǒ néng lǐjiě nǐ de xiǎngfǎ","vi":"Tôi có thể hiểu suy nghĩ của bạn."}]},{"id":"hsk4-sample-17","hanzi":"例如","pinyin":"lìrú","hanviet":"Lệ Như","meaning":"Ví dụ như","pos":"Liên từ","examples":[{"cn":"很多水果都很有营养，例如苹果和香蕉。","py":"Hěnduō shuǐguǒ dōu hěn yǒu yíngyǎng, lìrú píngguǒ hé xiāngjiāo","vi":"Nhiều loại trái cây rất bổ dưỡng, ví dụ như táo và chuối."}]},{"id":"hsk4-sample-18","hanzi":"联系","pinyin":"liánxì","hanviet":"Liên Hệ","meaning":"Liên hệ, liên lạc","pos":"Động từ/Danh từ","examples":[{"cn":"到了北京以后，请跟我联系。","py":"Dào le Běijīng yǐhòu, qǐng gēn wǒ liánxì","vi":"Sau khi đến Bắc Kinh, hãy liên lạc với tôi."}]},{"id":"hsk4-sample-19","hanzi":"难道","pinyin":"nándào","hanviet":"Nan Đạo","meaning":"Chẳng lẽ","pos":"Phó từ","examples":[{"cn":"难道你不喜欢中国菜吗？","py":"Nándào nǐ bù xǐhuan Zhōngguó cài ma?","vi":"Chẳng lẽ bạn không thích món ăn Trung Quốc sao?"}]},{"id":"hsk4-sample-20","hanzi":"努力","pinyin":"nǔlì","hanviet":"Nỗ Lực","meaning":"Cố gắng, nỗ lực","pos":"Động từ/Tính từ","examples":[{"cn":"他一直努力学习汉语。","py":"Tā yìzhí nǔlì xuéxí Hànyǔ","vi":"Anh ấy luôn cố gắng học tiếng Trung."}]},{"id":"hsk4-sample-21","hanzi":"判断","pinyin":"pànduàn","hanviet":"Phán Đoán","meaning":"Phán đoán, nhận định","pos":"Động từ/Danh từ","examples":[{"cn":"不要只根据外表判断一个人。","py":"Bú yào zhǐ gēnjù wàibiǎo pànduàn yí ge rén","vi":"Đừng chỉ dựa vào vẻ bề ngoài để đánh giá một người."}]},{"id":"hsk4-sample-22","hanzi":"情况","pinyin":"qíngkuàng","hanviet":"Tình Huống","meaning":"Tình hình, tình trạng","pos":"Danh từ","examples":[{"cn":"现在的情况比以前好多了。","py":"Xiànzài de qíngkuàng bǐ yǐqián hǎo duō le","vi":"Tình hình hiện tại tốt hơn trước rất nhiều."}]},{"id":"hsk4-sample-23","hanzi":"适合","pinyin":"shìhé","hanviet":"Thích Hợp","meaning":"Phù hợp, thích hợp","pos":"Động từ","examples":[{"cn":"这份工作很适合你。","py":"Zhè fèn gōngzuò hěn shìhé nǐ","vi":"Công việc này rất phù hợp với bạn."}]},{"id":"hsk4-sample-24","hanzi":"收入","pinyin":"shōurù","hanviet":"Thu Nhập","meaning":"Thu nhập","pos":"Danh từ","examples":[{"cn":"他的收入每年都在增加。","py":"Tā de shōurù měi nián dōu zài zēngjiā","vi":"Thu nhập của anh ấy tăng lên mỗi năm."}]},{"id":"hsk4-sample-25","hanzi":"同时","pinyin":"tóngshí","hanviet":"Đồng Thời","meaning":"Đồng thời, cùng lúc","pos":"Phó từ","examples":[{"cn":"他一边工作，同时还在学习。","py":"Tā yìbiān gōngzuò, tóngshí hái zài xuéxí","vi":"Anh ấy vừa làm việc, đồng thời vẫn học tập."}]},{"id":"hsk4-sample-26","hanzi":"完成","pinyin":"wánchéng","hanviet":"Hoàn Thành","meaning":"Hoàn thành","pos":"Động từ","examples":[{"cn":"我今天必须完成这个任务。","py":"Wǒ jīntiān bìxū wánchéng zhège rènwu","vi":"Hôm nay tôi nhất định phải hoàn thành nhiệm vụ này."}]},{"id":"hsk4-sample-27","hanzi":"相信","pinyin":"xiāngxìn","hanviet":"Tương Tín","meaning":"Tin tưởng, tin rằng","pos":"Động từ","examples":[{"cn":"我相信你一定能做到。","py":"Wǒ xiāngxìn nǐ yídìng néng zuòdào","vi":"Tôi tin bạn nhất định có thể làm được."}]},{"id":"hsk4-sample-28","hanzi":"选择","pinyin":"xuǎnzé","hanviet":"Tuyển Trạch","meaning":"Lựa chọn, sự lựa chọn","pos":"Động từ/Danh từ","examples":[{"cn":"面对困难时，我们要勇敢地选择。","py":"Miànduì kùnnan shí, wǒmen yào yǒnggǎn de xuǎnzé","vi":"Khi đối mặt với khó khăn, chúng ta phải dũng cảm lựa chọn."}]},{"id":"hsk4-sample-29","hanzi":"影响","pinyin":"yǐngxiǎng","hanviet":"Ảnh Hưởng","meaning":"Ảnh hưởng, tác động","pos":"Động từ/Danh từ","examples":[{"cn":"睡眠不足会影响学习效率。","py":"Shuìmián bùzú huì yǐngxiǎng xuéxí xiàolǜ","vi":"Thiếu ngủ sẽ ảnh hưởng đến hiệu quả học tập."}]},{"id":"hsk4-sample-30","hanzi":"至少","pinyin":"zhìshǎo","hanviet":"Chí Thiểu","meaning":"Ít nhất","pos":"Phó từ","examples":[{"cn":"每天至少复习二十个单词。","py":"Měitiān zhìshǎo fùxí èrshí ge dāncí","vi":"Mỗi ngày ôn tập ít nhất 20 từ mới."}]}];
+const HSK4_STARTER_GROUP = {"id":"hsk4-sample-group","name":"HSK 4 – 30 từ mẫu","wordIds":["hsk4-sample-01","hsk4-sample-02","hsk4-sample-03","hsk4-sample-04","hsk4-sample-05","hsk4-sample-06","hsk4-sample-07","hsk4-sample-08","hsk4-sample-09","hsk4-sample-10","hsk4-sample-11","hsk4-sample-12","hsk4-sample-13","hsk4-sample-14","hsk4-sample-15","hsk4-sample-16","hsk4-sample-17","hsk4-sample-18","hsk4-sample-19","hsk4-sample-20","hsk4-sample-21","hsk4-sample-22","hsk4-sample-23","hsk4-sample-24","hsk4-sample-25","hsk4-sample-26","hsk4-sample-27","hsk4-sample-28","hsk4-sample-29","hsk4-sample-30"]};
+const HSK4_SEED_MARKER = 'hi_chinese_hsk4_starter_v1';
+if (!localStorage.getItem(HSK4_SEED_MARKER)) {
+  const existingIds = new Set(customVocab.map(w => w.id));
+  const existingHanzi = new Set(customVocab.map(w => w.hanzi));
+  const toAdd = HSK4_STARTER_WORDS.filter(w => !existingIds.has(w.id) && !existingHanzi.has(w.hanzi));
+  customVocab.push(...toAdd);
+  const groupExists = vocabGroups.some(g => g.id === HSK4_STARTER_GROUP.id || g.name === HSK4_STARTER_GROUP.name);
+  if (!groupExists) vocabGroups.push({...HSK4_STARTER_GROUP, wordIds: HSK4_STARTER_GROUP.wordIds.filter(id => customVocab.some(w => w.id === id))});
+  else { const g = vocabGroups.find(g => g.id === HSK4_STARTER_GROUP.id || g.name === HSK4_STARTER_GROUP.name); g.wordIds = [...new Set([...(g.wordIds || []), ...HSK4_STARTER_GROUP.wordIds.filter(id => customVocab.some(w => w.id === id))])]; }
+  localStorage.setItem(HSK4_SEED_MARKER, '1');
+}
+
 // Chuẩn hóa và lưu ID cho dữ liệu cũ, không xóa các từ đã có trong localStorage.
 persistWords(); persistGroups();
 renderCustomWordsList(); renderGroupSelects(); renderGroupManager();
@@ -683,4 +733,3 @@ startPracticeForSelection();
 </script>
 </body>
 </html>
-
