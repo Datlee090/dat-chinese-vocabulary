@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SỔ GHI TỪ VỰNG - Luyện viết chữ Hán</title>
+  <title>HI Chinese - Học và luyện từ vựng tiếng Trung</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,6 +11,62 @@
     body { font-family: Inter, 'Noto Sans SC', sans-serif; }
     button:disabled { opacity: .45; cursor: not-allowed; }
     .hanzi { font-family: 'Noto Sans SC', sans-serif; }
+
+    /* Tối ưu màn hình điện thoại: điểm số, câu hỏi và phản hồi nằm gọn trong một màn hình */
+    @media (max-width: 640px) {
+      header > div { padding-top: 8px !important; padding-bottom: 8px !important; gap: 7px !important; }
+      header h1 { font-size: 17px !important; line-height: 1.15 !important; }
+      header nav { width: 100%; justify-content: center; }
+      header nav button { padding: 7px 9px !important; font-size: 12px !important; }
+      main { padding: 10px 10px 12px !important; }
+      #tab-practice { gap: 8px !important; }
+      #tab-practice > .grid { gap: 8px !important; }
+      #tab-practice > .grid > div { padding: 9px 11px !important; border-radius: 13px !important; }
+      #tab-practice > .grid > div p { font-size: 10px !important; }
+      #tab-practice > .grid > div h3 { font-size: 23px !important; margin-top: 0 !important; }
+      #tab-practice > .grid > div > div:last-child { width: 32px !important; height: 32px !important; border-radius: 9px !important; }
+      #tab-practice > .bg-white { padding: 12px !important; border-radius: 16px !important; }
+      #tab-practice > .bg-white > div:first-child { margin-bottom: 9px !important; gap: 7px !important; }
+      #tab-practice h2 { font-size: 15px !important; }
+      #practice-group-select { max-width: 58%; font-size: 12px !important; padding: 7px 8px !important; }
+      #tab-practice > .bg-white > div[role="group"] { margin-bottom: 8px !important; gap: 6px !important; }
+      #tab-practice > .bg-white > div[role="group"] button { padding: 7px 9px !important; font-size: 11px !important; }
+      #practice-content > div:first-child { margin-bottom: 5px !important; }
+      #practice-content > .text-center { padding: 5px 0 !important; }
+      #quiz-prompt { font-size: 12px !important; margin-bottom: 2px !important; }
+      #quiz-question { margin: 5px 0 !important; line-height: 1.2 !important; }
+      #quiz-question.hanzi { font-size: 42px !important; }
+      #quiz-question .hanzi { font-size: 38px !important; line-height: 1.2 !important; }
+      #quiz-question .text-base { font-size: 13px !important; margin-top: 3px !important; }
+      #quiz-pinyin { font-size: 13px !important; }
+      #quiz-options { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; margin-top: 8px !important; }
+      #quiz-options button { padding: 10px !important; font-size: 12px !important; line-height: 1.25 !important; }
+      #pinyin-answer-area { margin-top: 8px !important; gap: 6px !important; }
+      #pinyin-answer-area label { font-size: 12px !important; line-height: 1.3 !important; }
+      #pinyin-answer-area > div { flex-direction: row !important; gap: 6px !important; }
+      #pinyin-answer-input { min-width: 0; padding: 10px !important; font-size: 13px !important; }
+      #check-pinyin-btn { padding: 9px 12px !important; font-size: 12px !important; white-space: nowrap; }
+      #pinyin-answer-area > p { font-size: 10px !important; line-height: 1.25 !important; }
+      #quiz-feedback { margin-top: 8px !important; padding: 9px !important; font-size: 12px !important; line-height: 1.3 !important; }
+      #quiz-feedback .text-lg { font-size: 14px !important; }
+      #quiz-feedback .hanzi { font-size: 30px !important; margin-top: 4px !important; }
+      #quiz-feedback .mt-3 { margin-top: 5px !important; }
+      #quiz-feedback .mt-1 { margin-top: 2px !important; }
+      #practice-content > div:last-child { margin-top: 8px !important; }
+      #next-btn { padding: 9px 14px !important; font-size: 12px !important; }
+      footer { padding: 7px 4px !important; font-size: 10px !important; }
+    }
+    @media (max-width: 640px) and (max-height: 760px) {
+      header > div { padding-top: 5px !important; padding-bottom: 5px !important; }
+      main { padding-top: 6px !important; padding-bottom: 6px !important; }
+      #tab-practice > .grid > div { padding: 6px 9px !important; }
+      #tab-practice > .bg-white { padding: 9px !important; }
+      #practice-content > .text-center { padding: 2px 0 !important; }
+      #quiz-question.hanzi { font-size: 36px !important; }
+      #quiz-question .hanzi { font-size: 33px !important; }
+      #quiz-options button { padding: 8px !important; }
+      #quiz-feedback { margin-top: 5px !important; padding: 7px !important; }
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-red-50 via-amber-50 to-orange-100 min-h-screen text-slate-800 flex flex-col">
@@ -19,7 +75,7 @@
     <div class="flex items-center gap-3">
       <div class="bg-red-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg">中</div>
       <div>
-        <h1 class="text-xl font-bold bg-gradient-to-r from-red-600 to-amber-600 bg-clip-text text-transparent">SỔ GHI TỪ VỰNG</h1>
+        <h1 class="text-xl font-bold bg-gradient-to-r from-red-600 to-amber-600 bg-clip-text text-transparent">HI Chinese</h1>
         <p class="text-xs text-slate-500">Quản lý từ vựng • Nhóm chủ đề • Kiểm tra từ vựng</p>
       </div>
     </div>
@@ -137,7 +193,7 @@
     </div>
     <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-        <div><h2 class="font-bold text-lg">Luyện tập trắc nghiệm</h2><p id="practice-source-label" class="text-sm text-slate-500"></p></div>
+        <div><h2 class="font-bold text-lg">Luyện tập trắc nghiệm</h2><p id="practice-source-label" class="text-sm text-slate-500">Nguồn: Toàn bộ từ vựng</p></div>
         <div class="flex flex-wrap gap-2">
           <select id="practice-group-select" onchange="startPracticeForSelection()" class="px-3 py-2 border border-slate-200 rounded-xl bg-white"><option value="__all__">Toàn bộ từ vựng</option></select>
           <button onclick="resetPractice()" class="text-xs text-red-600 font-semibold bg-red-50 px-3 py-2 rounded-lg">🔄 Làm lại</button>
@@ -160,6 +216,7 @@
         </div>
         <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6"></div>
         <div id="pinyin-answer-area" class="hidden mt-6 space-y-3">
+          <label for="pinyin-answer-input" class="block text-sm font-semibold text-slate-700">Dựa vào nghĩa tiếng Việt, gõ Pinyin bằng bộ gõ tiếng Trung để tạo chữ Hán rồi kiểm tra.</label>
           <div class="flex flex-col sm:flex-row gap-2">
             <input id="pinyin-answer-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Ví dụ: gõ ni hao rồi chọn 你好" class="flex-1 px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400" onkeydown="if(event.key==='Enter') checkPinyinAnswer()">
             <button id="check-pinyin-btn" onclick="checkPinyinAnswer()" class="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold">Kiểm tra</button>
@@ -173,6 +230,7 @@
   </section>
 </main>
 <footer class="bg-white border-t border-slate-100 py-4 text-center text-xs text-slate-400 mt-auto">
+  <p>HI Chinese • Học và luyện từ vựng tiếng Trung</p>
 </footer>
 <div id="toast" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg text-sm"></div>
 
@@ -500,7 +558,7 @@ function loadQuestion() {
   document.getElementById('practice-empty').classList.toggle('hidden', !empty);
   document.getElementById('practice-content').classList.toggle('hidden', empty);
   const group = vocabGroups.find(g => g.id === currentPracticeGroup);
-  document.getElementById('practice-source-label').textContent = currentPracticeGroup === '__all__' ? '' : ` ${group ? group.name : ''}`;
+  document.getElementById('practice-source-label').textContent = currentPracticeGroup === '__all__' ? 'Nguồn: Toàn bộ từ vựng' : `Nguồn: Nhóm ${group ? group.name : ''}`;
   if (empty) return;
   if (currentQuestionIndex >= practiceVocab.length) currentQuestionIndex = 0;
   const current = practiceVocab[currentQuestionIndex];
